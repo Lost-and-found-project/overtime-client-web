@@ -1,4 +1,8 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 
-createApp(App).mount('#app')
+// naive messages
+
+const app = createApp(App)
+
+const mount = app.mount('#app')

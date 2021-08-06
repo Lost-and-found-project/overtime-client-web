@@ -1,32 +1,76 @@
 <template>
-  <n-message-provider>
+    {{ value == null ? 'null' : value }}
+    <n-layout position="absolve" :native-scrollbar="false">
+      <n-layout-header position="absolve">
+        <div style="padding: 15px 15px 15px 15px;">
+          <n-row>
+            <n-col :span="12">
+              <n-statistic label="统计数据" :value="99">
+                <template #prefix>
+                  @
+                </template>
+                <template #suffix>/ 100</template>
+              </n-statistic>
+            </n-col>
+            <n-col :span="12">
+              <n-statistic label="活跃用户">1,234,123</n-statistic>
+            </n-col>
+          </n-row>
+        </div>
+      </n-layout-header>
 
-    <overtime-calendar @update:value="onUp" :is-date-disabled="isDate" />
+      <n-divider/>
 
-  </n-message-provider>
+      <n-layout-content>
+        <n-layout :native-scrollbar="false"
+                  style="padding: 15px 15px 15px 15px;">
+          <n-message-provider>
+            <overtime-calendar
+                v-model:value="value"
+                :is-date-disabled="isDate"/>
+          </n-message-provider>
+        </n-layout>
+        <!--                @update:value="onUp" -->
+
+        <n-layout style="padding: 15px 15px 15px 15px;">
+          <n-message-provider>
+            <overtime-list/>
+          </n-message-provider>
+        </n-layout>
+      </n-layout-content>
+
+
+    </n-layout>
+
+
+  <!--6666-->
 </template>
 
 <script>
-import OvertimeCalendar from "./components/overtime/OvertimeCalendar.vue";
 // https://www.naiveui.com/zh-CN/os-theme/components/message
-import { NMessageProvider } from 'naive-ui'
+import {NMessageProvider, NLayout, NRow, NCol, NStatistic, NDivider} from 'naive-ui'
+import OvertimeCalendar from "./components/overtime/OvertimeCalendar.vue";
+import OvertimeList from "./components/overtime/OvertimeList.vue";
+import {ref} from "vue";
 
 export default {
-  components: {OvertimeCalendar, NMessageProvider},
+  components: {
+    OvertimeList, OvertimeCalendar,
+    NMessageProvider, NLayout, NRow, NCol, NStatistic, NDivider
+  },
   name: "App",
   setup() {
     return {
-      onUp(time, { year, month, date }) {
-        console.log('onUp(time, { '+ year +', '+ month +' , '+ date +'})')
+      value: ref(null),
+      onUp(time, {year, month, date}) {
+        console.log('onUp(time, { ' + year + ', ' + month + ' , ' + date + '})')
       },
       isDate(t) {
         return true
       }
     }
   },
-  methods: {
-
-  }
+  methods: {}
 }
 
 // This starter template is using Vue 3 experimental <script setup> SFCs

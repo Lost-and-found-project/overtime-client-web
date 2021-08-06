@@ -1,14 +1,34 @@
 <template>
-  <n-calendar @update:value="handleValueUpdate"
+  <n-calendar
+      @update:value="handleValueUpdate"
+              :value="value"
               :is-date-disabled="isDateDisabled"
               #="{ year, month, date }">
+
     <div>
-      <n-descriptions :column="1" :label-placement="'left'"
-                      :title="year + (month < 10 ? '-0' : '-') + month + (date < 10 ? '-0' : '-') + date">
-        <n-descriptions-item label="工作时间"> 8h</n-descriptions-item>
-        <n-descriptions-item label="加班时间"> 4h</n-descriptions-item>
-        <n-descriptions-item label="已得补偿"> 3.5h</n-descriptions-item>
-      </n-descriptions>
+      <h3>{{ year + (month < 10 ? '-0' : '-') + month + (date < 10 ? '-0' : '-') + date }}</h3>
+
+      <something-show :label="'工作时间'" :context="'8h'">
+        <template #header>
+          <n-icon :color="themeVars.infoColor">
+            <Briefcase/>
+          </n-icon>
+        </template>
+      </something-show>
+      <something-show :label="'加班时间'" :context="'4h'">
+        <template #header>
+          <n-icon :color="themeVars.warningColor">
+            <Clock/>
+          </n-icon>
+        </template>
+      </something-show>
+      <something-show :label="'已得补偿'" :context="'3.5h'">
+        <template #header>
+          <n-icon :color="themeVars.successColor">
+            <Scales24Filled/>
+          </n-icon>
+        </template>
+      </something-show>
 
       <template v-if="showType() === 1">
         <p>
@@ -20,18 +40,18 @@
           <n-progress :status="'success'" :percentage="100"></n-progress>
         </p>
       </template>
+
       <template v-else>
-        <p>
-          <span> 不需要补偿喔 </span> &nbsp;
-          <n-icon :color="themeVars.successColor">
-            <CheckCircle />
-          </n-icon>
-        </p>
+        <something-show :label="'不需要补偿'">
+          <template #header>
+            <n-icon :color="themeVars.successColor">
+              <CheckCircle/>
+            </n-icon>
+          </template>
+        </something-show>
       </template>
-
-
-
     </div>
+
   </n-calendar>
 </template>
 
@@ -42,7 +62,9 @@ import {
   NCalendar, NEllipsis, NDescriptions, NDescriptionsItem, NProgress, NIcon
 } from 'naive-ui'
 
-import { CheckCircle } from '@vicons/fa'
+import {CheckCircle, Briefcase, Clock} from '@vicons/fa'
+import {Scales24Filled} from '@vicons/fluent'
+import SomethingShow from "./SomethingShow.vue";
 
 /**
  * 记录加班时间的日历
@@ -50,29 +72,38 @@ import { CheckCircle } from '@vicons/fa'
  */
 export default {
   // see https://www.naiveui.com/zh-CN/os-theme/components/calendar
-  props: ['isDateDisabled'],
+  props: {
+    value: Number,
+    isDateDisabled: Function,
+    overtimeData: Array // see OvertimeData
+  },
   emits: ['update:value'],
   name: "OvertimeCalendar",
-  components: {CheckCircle,
-    NCalendar, NEllipsis, NDescriptions, NDescriptionsItem, NProgress, NIcon},
-  setup (props, context) {
+  components: {
+    CheckCircle, Briefcase, Clock,
+    Scales24Filled,
+    SomethingShow,
+    NCalendar, NEllipsis, NDescriptions, NDescriptionsItem, NProgress, NIcon
+  },
+  setup(props, context) {
     const message = useMessage()
     return {
       themeVars: useThemeVars(),
 
       showType() {
-        return Math.round(Math.random()*2+1)
+        return Math.round(Math.random() * 2 + 1)
       },
       handleValueUpdate(timestamp, dateInfo) {
-        const { year, month, date } = dateInfo
+        const {year, month, date} = dateInfo
         message.info(year + (month < 10 ? '-0' : '-') + month + (date < 10 ? '-0' : '-') + date)
         context.emit('update:value', timestamp, dateInfo)
       }
     }
   },
-  methods: {
+}
 
-  }
+function OvertimeData() {
+
 }
 
 </script>

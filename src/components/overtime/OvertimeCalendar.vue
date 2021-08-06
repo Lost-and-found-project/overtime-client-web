@@ -6,7 +6,18 @@
               #="{ year, month, date }">
 
     <div>
-      <h3>{{ year + (month < 10 ? '-0' : '-') + month + (date < 10 ? '-0' : '-') + date }}</h3>
+      <span>
+        <span style="font-size: 18px">
+          <b>
+          {{ year + (month < 10 ? '-0' : '-') + month + (date < 10 ? '-0' : '-') + date }}
+          </b>
+        </span>
+        <span style="padding-left: 10px;">
+          <n-tag round size="small" type="info" >工作日</n-tag>
+        </span>
+      </span>
+
+
 
       <something-show :label="'工作时间'" :context="'8h'">
         <template #header>
@@ -59,7 +70,9 @@
 import {
   useMessage,
   useThemeVars,
-  NCalendar, NEllipsis, NDescriptions, NDescriptionsItem, NProgress, NIcon
+  NCalendar, NEllipsis, NDescriptions,
+  NDescriptionsItem, NProgress, NIcon,
+  NTag,
 } from 'naive-ui'
 
 import {CheckCircle, Briefcase, Clock} from '@vicons/fa'
@@ -83,7 +96,9 @@ export default {
     CheckCircle, Briefcase, Clock,
     Scales24Filled,
     SomethingShow,
-    NCalendar, NEllipsis, NDescriptions, NDescriptionsItem, NProgress, NIcon
+    NCalendar, NEllipsis, NDescriptions,
+    NDescriptionsItem, NProgress, NIcon,
+    NTag,
   },
   setup(props, context) {
     const message = useMessage()

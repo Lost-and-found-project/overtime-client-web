@@ -1,5 +1,4 @@
 <template>
-    {{ value == null ? 'null' : value }}
     <n-layout position="absolve" :native-scrollbar="false">
       <n-layout-header position="absolve">
         <div style="padding: 15px 15px 15px 15px;">
@@ -13,7 +12,7 @@
               </n-statistic>
             </n-col>
             <n-col :span="12">
-              <n-statistic label="活跃用户">1,234,123</n-statistic>
+              <n-statistic label="什么数据">1,234,123</n-statistic>
             </n-col>
           </n-row>
         </div>
@@ -43,7 +42,6 @@
     </n-layout>
 
 
-  <!--6666-->
 </template>
 
 <script>
@@ -62,15 +60,11 @@ export default {
   setup() {
     return {
       value: ref(null),
-      onUp(time, {year, month, date}) {
-        console.log('onUp(time, { ' + year + ', ' + month + ' , ' + date + '})')
-      },
       isDate(t) {
         return true
       }
     }
-  },
-  methods: {}
+  }
 }
 
 // This starter template is using Vue 3 experimental <script setup> SFCs
